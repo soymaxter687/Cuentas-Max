@@ -90,6 +90,12 @@
       overflow-x: auto;
       max-width: 100%;
     }
+
+    .copy-btn {
+      cursor: pointer;
+      color: #0077cc;
+      margin-left: 5px;
+    }
   </style>
 </head>
 <body>
@@ -164,11 +170,10 @@
         if (idx === -1) return "";
         const cell = row.c[idx];
         if (!cell) return "";
-        if (cell.f) return formatearFecha(cell.f); 
+        if (cell.f) return formatearFecha(cell.f);
         return cell.v || "";
       };
 
-      // Filtramos tanto por el teléfono como por el código de seguridad
       const clientes = rows.map(row => {
         return {
           Nombre: getCellValue(row, "Nombre") + " " + getCellValue(row, "Apellidos"),
@@ -219,8 +224,14 @@
           <tr>
             <td>${cliente.Nombre}</td>
             <td>${cliente.Servicio}</td>
-            <td>${correoMostrar}</td>
-            <td>${contrasenaMostrar}</td>
+            <td>
+              ${correoMostrar}
+              <span class="copy-btn" onclick="copiarTexto('${correoMostrar}')">📋</span>
+            </td>
+            <td>
+              ${contrasenaMostrar}
+              <span class="copy-btn" onclick="copiarTexto('${contrasenaMostrar}')">📋</span>
+            </td>
             <td>${cliente.Usuario}</td>
             <td>${cliente.FechaVencimiento}</td>
             <td>${cliente.PIN}</td>
@@ -237,7 +248,14 @@
       console.error(e);
     }
   });
+
+  function copiarTexto(texto) {
+    navigator.clipboard.writeText(texto)
+      .then(() => alert("¡Copiado al portapapeles!"))
+      .catch(err => alert("Error al copiar: " + err));
+  }
 </script>
 
 </body>
 </html>
+
