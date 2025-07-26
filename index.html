@@ -44,7 +44,7 @@
     }
 
     button {
-      background-color: #0077cc;
+      background-color: #2AA63E;
       color: white;
       border: none;
       padding: 10px;
@@ -54,7 +54,7 @@
     }
 
     button:hover {
-      background-color: #005fa3;
+      background-color: #31C950;
     }
 
     table {
@@ -222,7 +222,8 @@
           FechaVencimiento: getCellValue(row, "Fecha de vencimiento"),
           PIN: getCellValue(row, "PIN"),
           Codigo: getCellValue(row, "Número de fax"),
-          Precio: getCellValue(row, "Precio")
+          Precio: getCellValue(row, "Precio"),
+          Correo: getCellValue(row, "Correo")
         };
       }).filter(c => c.NumeroTelefono === telefonoCompleto && c.Codigo === codigo);
 
@@ -249,33 +250,39 @@
       `;
 
       clientes.forEach(cliente => {
-        let correoMostrar = cliente.CorreoCuenta;
-        let contrasenaMostrar = cliente.Contrasena;
+  let correoMostrar = cliente.CorreoCuenta;  // Lo que se muestra por defecto
+  let contrasenaMostrar = cliente.Contrasena;
 
-        if (cliente.Servicio.toLowerCase() === "youtube" || cliente.Servicio.toLowerCase() === "spotify") {
-          correoMostrar = cliente.Usuario || cliente.CorreoCuenta || "-----";
-          contrasenaMostrar = "-----";
-        }
+  // Verificamos si el servicio es "youtube" o "spotify"
+  if (cliente.Servicio.toLowerCase() === "youtube" || cliente.Servicio.toLowerCase() === "spotify") {
+    // Si es uno de esos servicios, mostramos el "Correo electrónico" y no el "Correo de la cuenta"
+    correoMostrar = cliente['Correo'];  // Asegúrate de que "Correo electrónico" exista en los datos
+    contrasenaMostrar = "-----";  // El correo electrónico es el único campo visible para estos servicios
+  }
 
-        tablaHTML += `
-          <tr>
-            <td>${cliente.Nombre}</td>
-            <td>${cliente.Servicio}</td>
-            <td>
-              ${correoMostrar}
-              <span class="copy-btn" onclick="copiarTexto('${correoMostrar}')">📋</span>
-            </td>
-            <td>
-              ${contrasenaMostrar}
-              <span class="copy-btn" onclick="copiarTexto('${contrasenaMostrar}')">📋</span>
-            </td>
-            <td>${cliente.Usuario}</td>
-            <td>${cliente.FechaVencimiento}</td>
-            <td>${cliente.PIN}</td>
-            <td>${cliente.Precio}</td>
-          </tr>
-        `;
-      });
+  tablaHTML += `
+    <tr>
+      <td>${cliente.Nombre}</td>
+      <td>${cliente.Servicio}</td>
+      <td>
+        ${correoMostrar}
+        <span class="copy-btn" onclick="copiarTexto('${correoMostrar}')">📋</span>
+      </td>
+      <td>
+        ${contrasenaMostrar}
+        <!-- El botón de copiar solo se añade si no es YouTube o Spotify -->
+        ${cliente.Servicio.toLowerCase() !== "youtube" && cliente.Servicio.toLowerCase() !== "spotify" ? 
+        `<span class="copy-btn" onclick="copiarTexto('${contrasenaMostrar}')">📋</span>` : ""}
+      </td>
+      <td>${cliente.Usuario}</td>
+      <td>${cliente.FechaVencimiento}</td>
+      <td>${cliente.PIN}</td>
+      <td>${cliente.Precio}</td>
+    </tr>
+  `;
+});
+
+
 
       tablaHTML += `</tbody></table>`;
       resultadoDiv.innerHTML = tablaHTML;
@@ -292,6 +299,3 @@
       .catch(err => alert("Error al copiar: " + err));
   }
 </script>
-
-
-
