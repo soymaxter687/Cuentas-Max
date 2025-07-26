@@ -129,7 +129,7 @@
 
   const KEY = "aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvMWhfN1ZWUWZEMy14UDhHbjhRaFRxVDJvR0xkNHRjY0U3dGc4b1BrSEhUZ28vZ3Zpei90cT90cXg9b3V0Ompzb24mc2hlZXQ9VG9kb3MlMjBsb3MlMjBjb250YWN0b3M=";
 
-  function retroceso(str) {
+  function reset(str) {
     try {
       return atob(str);
     } catch (e) {
@@ -138,7 +138,7 @@
     }
   }
 
-  const URL = retroceso(KEY);
+  const URL = reset(KEY);
 
   // Función para formatear fechas como "17 de enero de 2025"
   function formatearFecha(texto) {
