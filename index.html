@@ -119,10 +119,23 @@
 <div id="mensaje"></div>
 <div id="resultado"></div>
 
+
+
 <script>
-  const SHEET_ID = "1h_7VVQfD3-xP8Gn8QhTqT2oGLd4tccE7tg8oPkHHTgo";
-  const SHEET_NAME = "Todos los contactos";
-  const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+  // URL cifrada en Base64
+  const KEY = "aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvMWhfN1ZWUWZEMy14UDhHbjhRaFRxVDJvR0xkNHRjY0U3dGc4b1BrSEhUZ28vZ3Zpei90cT90cXg9b3V0Ompzb24mc2hlZXQ9VG9kb3MlMjBsb3MlMjBjb250YWN0b3M=";
+
+  // Función para descifrar Base64
+  function retroceso(str) {
+    try {
+      return atob(str);
+    } catch (e) {
+      console.error("Error al retroceder seis cuatro:", e);
+      return "";
+    }
+  }
+
+  const URL = retroceso(KEY);
 
   // Función para formatear fechas como "17 de enero de 2025"
   function formatearFecha(texto) {
@@ -130,7 +143,7 @@
     if (partes.length !== 3) return texto;
 
     const dia = parseInt(partes[0], 10);
-    const mes = parseInt(partes[1], 10) - 1; // enero = 0
+    const mes = parseInt(partes[1], 10) - 1;
     const año = parseInt(partes[2], 10);
 
     const fecha = new Date(año, mes, dia);
@@ -255,7 +268,4 @@
       .catch(err => alert("Error al copiar: " + err));
   }
 </script>
-
-</body>
-</html>
 
