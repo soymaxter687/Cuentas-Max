@@ -5,84 +5,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Consulta tus servicios</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      max-width: 800px;
-      margin: 30px auto;
-      padding: 20px;
-      background-color: #f0f4f8;
-      color: #333;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+* {
+  box-sizing: border-box;
+}
 
-    h1 {
-      text-align: center;
-      color: #005f99;
-    }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  width: 100%;
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #f0f4f8;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
 
-    label, select, input, button {
-      font-size: 1rem;
-      margin: 10px 0;
-      display: block;
-      width: 100%;
-    }
+h1 {
+  text-align: center;
+  color: #005f99;
+}
 
-    input, select {
-      padding: 8px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+label, select, input, button {
+  font-size: 1rem;
+  margin: 15px 0;
+  display: block;
+  width: 100%;
+}
 
-    button {
-      background-color: #0077cc;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+input, select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 
-    button:hover {
-      background-color: #005fa3;
-    }
+button {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 8px rgba(0,0,0,0.05);
-      border-radius: 8px;
-      overflow: hidden;
-    }
+button:hover {
+  background-color: #005fa3;
+}
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-    }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-    th {
-      background-color: #0077cc;
-      color: white;
-    }
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
 
-    tr:nth-child(even) {
-      background-color: #f2f9ff;
-    }
+th {
+  background-color: #0077cc;
+  color: white;
+}
 
-    #mensaje {
-      color: red;
-      font-weight: bold;
-      margin-top: 15px;
-      text-align: center;
-    }
+tr:nth-child(even) {
+  background-color: #f2f9ff;
+}
 
-    #resultado {
-      margin-top: 20px;
-    }
+#mensaje {
+  color: red;
+  font-weight: bold;
+  margin-top: 15px;
+  text-align: center;
+}
+
+#resultado {
+  margin-top: 20px;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
   </style>
 </head>
 <body>
@@ -228,3 +236,4 @@
 
 </body>
 </html>
+
