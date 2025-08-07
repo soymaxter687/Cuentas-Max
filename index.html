@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://i.postimg.cc/8cf4Rh17/LOGO-MAX.png" type="image/png">
+  <title>Consulta tus servicios</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      width: 100%;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #f0f4f8;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 { text-align: center; color: #005f99; }
+    label, select, input, button {
+      font-size: 1rem;
+      margin: 15px 0;
+      display: block;
+      width: 100%;
+    }
+    input, select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #2AA63E;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover { background-color: #31C950; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #0077cc;
+      color: white;
+    }
+    tr:nth-child(even) { background-color: #f2f9ff; }
+    #mensaje {
+      color: red;
+      font-weight: bold;
+      margin-top: 15px;
+      text-align: center;
+    }
+    #resultado {
+      margin-top: 20px;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .copy-btn {
+      cursor: pointer;
+      color: #0077cc;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <img src="https://i.postimg.cc/8cf4Rh17/LOGO-MAX.png" alt="Logo" style="max-width: 150px; border-radius: 25px; display: block; margin: 0 auto 10px;">
+  <h1>Consulta tus servicios</h1>
+
+  <label for="pais">Selecciona país:</label>
+  <select id="pais">
+    <option value="+52">México (+52)</option>
+    <option value="+1">Estados Unidos (+1)</option>
+  </select>
+
+  <label for="telefono">Ingresa tu número de teléfono (sin espacios ni guiones):</label>
+  <input type="text" id="Telefono" placeholder="Ejemplo: 9811345643" />
+
+  <label for="codigo">Ingresa tu código de seguridad (4 dígitos):</label>
+  <input type="text" id="Codigo" placeholder="Ejemplo: 1234" maxlength="4" />
+
+  <button id="btnConsultar">Consultar</button>
+
+  <div id="mensaje"></div>
+  <div id="resultado"></div>
+
+<script>
+  const URL = "https://script.google.com/macros/s/AKfycbxU0Q2nWtZITl2OScZCD1vNhAlFJqyFC4qbpC8oqm3oinsqTYplkJdm32IB5I1qGLiO/exec"; 
+
+  function formatearFecha(texto) {
+    const partes = texto.split('/');
+    if (partes.length !== 3) return texto;
+    const dia = parseInt(partes[0], 10);
+    const mes = parseInt(partes[1], 10) - 1;
+    const año = parseInt(partes[2], 10);
+    const fecha = new Date(año, mes, dia);
+    return fecha.toLocaleDateString('es-MX', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  
+
+  document.getElementById('btnConsultar').addEventListener('click', async () => {
+    const pais = document.getElementById('pais').value.trim();
+    const telefono = document.getElementById('Telefono').value.trim();
+    const codigo = document.getElementById('Codigo').value.trim();
+    const mensajeDiv = document.getElementById('mensaje');
+    const resultadoDiv = document.getElementById('resultado');
+    mensajeDiv.textContent = "";
+    resultadoDiv.innerHTML = "";
+
+    if (!telefono.match(/^\d+$/) || !codigo.match(/^\d{4}$/)) {
+      mensajeDiv.textContent = "Verifica que el teléfono y el código de seguridad sean válidos.";
+      return;
+    }
+
+    const telefonoCompleto = (pais + telefono).replace(/\+/g, ""); // Elimina el '+' si lo tiene
+
+try {
+  const res = await fetch(`${URL}?Telefono=${telefonoCompleto}&Codigo=${codigo}`);
+  const text = await res.text();
+
+  // Validación básica para saber si el backend devolvió JSON
+  if (!text.startsWith("{") && !text.startsWith("[")) {
+    mensajeDiv.textContent = text; // Si no es JSON válido, muestra el mensaje
+    return;
+  }
+
+  const clientes = JSON.parse(text);
+
+  if (!Array.isArray(clientes)) {
+    mensajeDiv.textContent = "Formato de datos inesperado.";
+    return;
+  }
+
+  // Generar filas de la tabla
+  let filasHTML = clientes.map(cliente => {
+    let correoMostrar = cliente["Correo Cuenta"];
+    let contrasenaMostrar = cliente["Contraseña"];
+
+    // Si es YouTube o Spotify, muestra el correo del cliente y oculta la contraseña
+    if (["youtube", "spotify"].includes(cliente["Servicio"].toLowerCase())) {
+      correoMostrar = cliente["Correo Cliente"];
+      contrasenaMostrar = "-----";
+    }
+
+    return `
+      <tr>
+        <td>${cliente["Nombre"]}</td>
+        <td>${cliente["Servicio"]}</td>
+        <td>${correoMostrar} <span class="copy-btn" onclick="copiarTexto('${correoMostrar}')">📋</span></td>
+        <td>${contrasenaMostrar} ${contrasenaMostrar !== "-----" ? `<span class="copy-btn" onclick="copiarTexto('${contrasenaMostrar}')">📋</span>` : ""}</td>
+        <td>${cliente["Usuario"]}</td>
+        <td>${formatearFecha(cliente["Fecha Vencimiento"])}</td>
+        <td>${cliente["PIN"]}</td>
+        <td>${cliente["Precio"]}</td>
+      </tr>
+    `;
+  }).join("");
+
+  // Tabla completa
+  resultadoDiv.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Servicio</th>
+          <th>Correo</th>
+          <th>Contraseña</th>
+          <th>Usuario</th>
+          <th>Vencimiento</th>
+          <th>PIN</th>
+          <th>Precio ($)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${filasHTML}
+      </tbody>
+    </table>
+  `;
+
+} catch (e) {
+  mensajeDiv.textContent = "Error al consultar los datos. Intenta de nuevo más tarde.";
+  console.error(e);
+}
+  });
+
+  function copiarTexto(texto) {
+    navigator.clipboard.writeText(texto)
+      .then(() => alert("¡Copiado al portapapeles!"))
+      .catch(err => alert("Error al copiar: " + err));
+  }
+</script>
+</body>
+</html>
