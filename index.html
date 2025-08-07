@@ -4,15 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="https://i.postimg.cc/8cf4Rh17/LOGO-MAX.png" type="image/png">
-
-  <img src="https://i.postimg.cc/8cf4Rh17/LOGO-MAX.png" alt="Logo" style="max-width: 150px; border-radius: 25px; display: block; margin: 0 auto 10px;">
   <title>Consulta tus servicios</title>
-  
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', sans-serif;
       width: 100%;
@@ -24,25 +18,18 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-    h1 {
-      text-align: center;
-      color: #005f99;
-    }
-
+    h1 { text-align: center; color: #005f99; }
     label, select, input, button {
       font-size: 1rem;
       margin: 15px 0;
       display: block;
       width: 100%;
     }
-
     input, select {
       padding: 8px;
       border-radius: 5px;
       border: 1px solid #ccc;
     }
-
     button {
       background-color: #2AA63E;
       color: white;
@@ -52,11 +39,7 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
-
-    button:hover {
-      background-color: #31C950;
-    }
-
+    button:hover { background-color: #31C950; }
     table {
       border-collapse: collapse;
       width: 100%;
@@ -66,35 +49,27 @@
       border-radius: 8px;
       overflow: hidden;
     }
-
     th, td {
       border: 1px solid #ddd;
       padding: 10px;
       text-align: center;
     }
-
     th {
       background-color: #0077cc;
       color: white;
     }
-
-    tr:nth-child(even) {
-      background-color: #f2f9ff;
-    }
-
+    tr:nth-child(even) { background-color: #f2f9ff; }
     #mensaje {
       color: red;
       font-weight: bold;
       margin-top: 15px;
       text-align: center;
     }
-
     #resultado {
       margin-top: 20px;
       overflow-x: auto;
       max-width: 100%;
     }
-
     .copy-btn {
       cursor: pointer;
       color: #0077cc;
@@ -103,51 +78,35 @@
   </style>
 </head>
 <body>
+  <img src="https://i.postimg.cc/8cf4Rh17/LOGO-MAX.png" alt="Logo" style="max-width: 150px; border-radius: 25px; display: block; margin: 0 auto 10px;">
+  <h1>Consulta tus servicios</h1>
 
-<h1>Consulta tus servicios</h1>
+  <label for="pais">Selecciona país:</label>
+  <select id="pais">
+    <option value="+52">México (+52)</option>
+    <option value="+1">Estados Unidos (+1)</option>
+  </select>
 
-<label for="pais">Selecciona país:</label>
-<select id="pais">
-  <option value="+52">México (+52)</option>
-  <option value="+1">Estados Unidos (+1)</option>
-</select>
+  <label for="telefono">Ingresa tu número de teléfono (sin espacios ni guiones):</label>
+  <input type="text" id="Telefono" placeholder="Ejemplo: 9811345643" />
 
-<label for="telefono">Ingresa tu número de teléfono (sin espacios ni guiones):</label>
-<input type="text" id="telefono" placeholder="Ejemplo: 9811345643" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-<label for="codigo">Ingresa tu código de seguridad (4 dígitos):</label>
-<input type="text" id="codigo" placeholder="Ejemplo: 1234" maxlength="4" />
+  <label for="codigo">Ingresa tu código de seguridad (4 dígitos):</label>
+  <input type="text" id="Codigo" placeholder="Ejemplo: 1234" maxlength="4" />
 
-<button id="btnConsultar">Consultar</button>
+  <button id="btnConsultar">Consultar</button>
 
-<div id="mensaje"></div>
-<div id="resultado"></div>
-
-
+  <div id="mensaje"></div>
+  <div id="resultado"></div>
 
 <script>
+  const URL = "https://script.google.com/macros/s/AKfycbxU0Q2nWtZITl2OScZCD1vNhAlFJqyFC4qbpC8oqm3oinsqTYplkJdm32IB5I1qGLiO/exec"; 
 
-  const KEY = "aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvMWhfN1ZWUWZEMy14UDhHbjhRaFRxVDJvR0xkNHRjY0U3dGc4b1BrSEhUZ28vZ3Zpei90cT90cXg9b3V0Ompzb24mc2hlZXQ9VG9kb3MlMjBsb3MlMjBjb250YWN0b3M=";
-
-  function reset(str) {
-    try {
-      return atob(str);
-    } catch (e) {
-      console.error("Error retro:", e);
-      return "";
-    }
-  }
-
-  const URL = reset(KEY);
-
-  // Función para formatear fechas como "17 de enero de 2025"
   function formatearFecha(texto) {
     const partes = texto.split('/');
     if (partes.length !== 3) return texto;
-
     const dia = parseInt(partes[0], 10);
     const mes = parseInt(partes[1], 10) - 1;
     const año = parseInt(partes[2], 10);
-
     const fecha = new Date(año, mes, dia);
     return fecha.toLocaleDateString('es-MX', {
       year: 'numeric',
@@ -156,10 +115,12 @@
     });
   }
 
+  
+
   document.getElementById('btnConsultar').addEventListener('click', async () => {
     const pais = document.getElementById('pais').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
-    const codigo = document.getElementById('codigo').value.trim();
+    const telefono = document.getElementById('Telefono').value.trim();
+    const codigo = document.getElementById('Codigo').value.trim();
     const mensajeDiv = document.getElementById('mensaje');
     const resultadoDiv = document.getElementById('resultado');
     mensajeDiv.textContent = "";
@@ -170,125 +131,75 @@
       return;
     }
 
-    const telefonoCompleto = pais + telefono;
+    const telefonoCompleto = (pais + telefono).replace(/\+/g, ""); // Elimina el '+' si lo tiene
 
-    try {
-      const res = await fetch(URL);
-      const text = await res.text();
-      const jsonStr = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
-      const data = JSON.parse(jsonStr);
-      const rows = data.table.rows;
-      const cols = data.table.cols.map(c => c.label);
+try {
+  const res = await fetch(`${URL}?Telefono=${telefonoCompleto}&Codigo=${codigo}`);
+  const text = await res.text();
 
-      const getCellValue = (row, colName) => {
-  const idx = cols.indexOf(colName);
-  if (idx === -1) return "";
-  const cell = row.c[idx];
-  if (!cell) return "";
-
-  let valor = cell.f || cell.v || "";
-
-  // Detectar y corregir formato YYYY-MM-DD manualmente
-  if (typeof valor === "string" && /^\d{4}-\d{2}-\d{2}$/.test(valor)) {
-    const [anio, mes, dia] = valor.split("-");
-    const fecha = new Date(parseInt(anio), parseInt(mes) - 1, parseInt(dia));
-    return fecha.toLocaleDateString('es-MX', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+  // Validación básica para saber si el backend devolvió JSON
+  if (!text.startsWith("{") && !text.startsWith("[")) {
+    mensajeDiv.textContent = text; // Si no es JSON válido, muestra el mensaje
+    return;
   }
 
-  // También conservar soporte para DD/MM/YYYY si aplicara
-  if (typeof valor === "string" && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(valor)) {
-    return formatearFecha(valor);
+  const clientes = JSON.parse(text);
+
+  if (!Array.isArray(clientes)) {
+    mensajeDiv.textContent = "Formato de datos inesperado.";
+    return;
   }
 
-  return valor;
-};
+  // Generar filas de la tabla
+  let filasHTML = clientes.map(cliente => {
+    let correoMostrar = cliente["Correo Cuenta"];
+    let contrasenaMostrar = cliente["Contraseña"];
 
-
-
-      const clientes = rows.map(row => {
-        return {
-          Nombre: getCellValue(row, "Nombre") + " " + getCellValue(row, "Apellidos"),
-          NumeroTelefono: getCellValue(row, "Número de teléfono").toString().replace(/\s+/g, ''),
-          CorreoCuenta: getCellValue(row, "Correo de la cuenta"),
-          Contrasena: getCellValue(row, "Contraseña"),
-          Servicio: getCellValue(row, "Servicio"),
-          Usuario: getCellValue(row, "Usuario"),
-          FechaVencimiento: getCellValue(row, "Fecha de vencimiento"),
-          PIN: getCellValue(row, "PIN"),
-          Codigo: getCellValue(row, "Número de fax"),
-          Precio: getCellValue(row, "Precio"),
-          Correo: getCellValue(row, "Correo")
-        };
-      }).filter(c => c.NumeroTelefono === telefonoCompleto && c.Codigo === codigo);
-
-      if (clientes.length === 0) {
-        mensajeDiv.textContent = "No se encontró ningún cliente con ese número y código.";
-        return;
-      }
-
-      let tablaHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Servicio</th>
-              <th>Correo</th>
-              <th>Contraseña</th>
-              <th>Usuario</th>
-              <th>Vencimiento</th>
-              <th>PIN</th>
-              <th>Precio ($)</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      clientes.forEach(cliente => {
-  let correoMostrar = cliente.CorreoCuenta;  // Lo que se muestra por defecto
-  let contrasenaMostrar = cliente.Contrasena;
-
-  // Verificamos si el servicio es "youtube" o "spotify"
-  if (cliente.Servicio.toLowerCase() === "youtube" || cliente.Servicio.toLowerCase() === "spotify") {
-    // Si es uno de esos servicios, mostramos el "Correo electrónico" y no el "Correo de la cuenta"
-    correoMostrar = cliente['Correo'];  // Asegúrate de que "Correo electrónico" exista en los datos
-    contrasenaMostrar = "-----";  // El correo electrónico es el único campo visible para estos servicios
-  }
-
-  tablaHTML += `
-    <tr>
-      <td>${cliente.Nombre}</td>
-      <td>${cliente.Servicio}</td>
-      <td>
-        ${correoMostrar}
-        <span class="copy-btn" onclick="copiarTexto('${correoMostrar}')">📋</span>
-      </td>
-      <td>
-        ${contrasenaMostrar}
-        <!-- El botón de copiar solo se añade si no es YouTube o Spotify -->
-        ${cliente.Servicio.toLowerCase() !== "youtube" && cliente.Servicio.toLowerCase() !== "spotify" ? 
-        `<span class="copy-btn" onclick="copiarTexto('${contrasenaMostrar}')">📋</span>` : ""}
-      </td>
-      <td>${cliente.Usuario}</td>
-      <td>${cliente.FechaVencimiento}</td>
-      <td>${cliente.PIN}</td>
-      <td>${cliente.Precio}</td>
-    </tr>
-  `;
-});
-
-
-
-      tablaHTML += `</tbody></table>`;
-      resultadoDiv.innerHTML = tablaHTML;
-
-    } catch (e) {
-      mensajeDiv.textContent = "Error al consultar los datos. Intenta de nuevo más tarde.";
-      console.error(e);
+    // Si es YouTube o Spotify, muestra el correo del cliente y oculta la contraseña
+    if (["youtube", "spotify"].includes(cliente["Servicio"].toLowerCase())) {
+      correoMostrar = cliente["Correo Cliente"];
+      contrasenaMostrar = "-----";
     }
+
+    return `
+      <tr>
+        <td>${cliente["Nombre"]}</td>
+        <td>${cliente["Servicio"]}</td>
+        <td>${correoMostrar} <span class="copy-btn" onclick="copiarTexto('${correoMostrar}')">📋</span></td>
+        <td>${contrasenaMostrar} ${contrasenaMostrar !== "-----" ? `<span class="copy-btn" onclick="copiarTexto('${contrasenaMostrar}')">📋</span>` : ""}</td>
+        <td>${cliente["Usuario"]}</td>
+        <td>${formatearFecha(cliente["Fecha Vencimiento"])}</td>
+        <td>${cliente["PIN"]}</td>
+        <td>${cliente["Precio"]}</td>
+      </tr>
+    `;
+  }).join("");
+
+  // Tabla completa
+  resultadoDiv.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Servicio</th>
+          <th>Correo</th>
+          <th>Contraseña</th>
+          <th>Usuario</th>
+          <th>Vencimiento</th>
+          <th>PIN</th>
+          <th>Precio ($)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${filasHTML}
+      </tbody>
+    </table>
+  `;
+
+} catch (e) {
+  mensajeDiv.textContent = "Error al consultar los datos. Intenta de nuevo más tarde.";
+  console.error(e);
+}
   });
 
   function copiarTexto(texto) {
@@ -297,3 +208,6 @@
       .catch(err => alert("Error al copiar: " + err));
   }
 </script>
+</body>
+</html>
+
